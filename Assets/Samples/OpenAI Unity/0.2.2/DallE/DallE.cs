@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -13,7 +12,7 @@ namespace OpenAI
         [SerializeField] private Image image;
         [SerializeField] private GameObject loadingLabel;
 
-        private OpenAIApi openai;
+        private OpenAIApi openai = new OpenAIApi();
 
         private void Start()
         {

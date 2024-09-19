@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.IO;
-using OpenAI;
 using UnityEngine;
-using UnityEngine.Internal;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
-namespace Samples.OpenAI_Unity._0._2._2.ChatGPT
+namespace OpenAI
 {
     public class ChatGPT : MonoBehaviour
     {
@@ -17,30 +14,14 @@ namespace Samples.OpenAI_Unity._0._2._2.ChatGPT
         [SerializeField] private RectTransform received;
 
         private float height;
-        private OpenAIApi openai;
+        private OpenAIApi openai = new OpenAIApi();
 
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt;
-
-        private string textPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\auth.json";
-
-        private OpenAIData _openAIData;
+        private string prompt = "Act as a random stranger in a chat room and reply to the questions. Don't break character. Don't ever mention that you are an AI model.";
 
         private void Start()
         {
-            string text = File.ReadAllText(textPath);
-            var res = JsonUtility.FromJson<OpenAIData>(text);
-            prompt = res.prompt;
-            openai = new OpenAIApi(res.api_key);
             button.onClick.AddListener(SendReply);
-
-            _openAIData = new OpenAIData
-            {
-                api_key = res.api_key,
-                prompt = res.prompt,
-                organization = res.organization,
-                messages = new List<ChatMessage>()
-            }; 
         }
 
         private void AppendMessage(ChatMessage message)
@@ -65,8 +46,6 @@ namespace Samples.OpenAI_Unity._0._2._2.ChatGPT
             };
             
             AppendMessage(newMessage);
-            
-            AddMessageToOpenAI(newMessage);
 
             if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text; 
             
@@ -90,29 +69,14 @@ namespace Samples.OpenAI_Unity._0._2._2.ChatGPT
                 
                 messages.Add(message);
                 AppendMessage(message);
-                
-                AddMessageToOpenAI(message);
             }
             else
             {
                 Debug.LogWarning("No text was generated from this prompt.");
             }
 
-            SaveDataToLocal(_openAIData, true);
-            
             button.enabled = true;
             inputField.enabled = true;
-        }
-
-        private void AddMessageToOpenAI(ChatMessage message)
-        {
-            _openAIData.messages.Add(message);
-        }
-
-        private async void SaveDataToLocal(object obj, [DefaultValue("false")]bool readability)
-        {
-            string jsonStr = JsonUtility.ToJson(obj, readability);
-            await File.WriteAllTextAsync(textPath, jsonStr);
         }
     }
 }
