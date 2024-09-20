@@ -9,5 +9,10 @@ namespace Data
     public struct MessagesData
     {
         public List<ChatMessage> messages;
+
+        public MessagesData(int capacity)
+        {
+            messages = new List<ChatMessage>(capacity);
+        }
     }
 }

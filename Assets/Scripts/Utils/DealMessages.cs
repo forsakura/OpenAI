@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Internal;
 
@@ -23,7 +24,11 @@ namespace Utils
         public static void SaveMessages(object obj, [DefaultValue("false")]bool readability, string fileName)
         {
             string path = messagesPath + "/" + fileName + ".json";
-            string jsonStr = JsonUtility.ToJson(obj, readability);
+            string jsonStr = JsonConvert.SerializeObject(obj);
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
             File.WriteAllText(path, jsonStr);
         }
 
@@ -37,7 +42,7 @@ namespace Utils
         {
             string path = messagesPath + "/" + fileName + ".json";
             string text = File.ReadAllText(path);
-            T res = JsonUtility.FromJson<T>(text);
+            T res = JsonConvert.DeserializeObject<T>(text);
             return res;
         }
 

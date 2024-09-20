@@ -7,5 +7,4 @@ public struct OpenAIData
     public string organization;
     public string model;
     public string prompt;
-    public List<ChatMessage> messages;
 }

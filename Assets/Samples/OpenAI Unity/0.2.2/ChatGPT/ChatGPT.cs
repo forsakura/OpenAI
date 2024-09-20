@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using Data;
 using Utils;
 
 namespace OpenAI
@@ -19,12 +20,14 @@ namespace OpenAI
         private OpenAIApi openai;
 
         private OpenAIData data;
+        private MessagesData messagesData;
         private string authPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\auth.json";
         private string myAuthPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\myauth.json";
         private string difyAuthPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\difyauth.json";
         
         private void Start()
         {
+            messagesData = new MessagesData(0);
             data = DealMessages.LoadMessages<OpenAIData>("myauth");
             openai = new OpenAIApi(data.api_key);
             button.onClick.AddListener(SendReply);
@@ -53,9 +56,9 @@ namespace OpenAI
             
             AppendMessage(newMessage);
 
-            if (data.messages.Count == 0) newMessage.Content = data.prompt + "\n" + inputField.text; 
+            if (messagesData.messages.Count == 0) newMessage.Content = data.prompt + "\n" + inputField.text; 
             
-            data.messages.Add(newMessage);
+            messagesData.messages.Add(newMessage);
             
             button.enabled = false;
             inputField.text = "";
@@ -65,7 +68,7 @@ namespace OpenAI
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
             {
                 Model = data.model,
-                Messages = data.messages
+                Messages = messagesData.messages
             });
 
             if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
@@ -73,7 +76,7 @@ namespace OpenAI
                 var message = completionResponse.Choices[0].Message;
                 message.Content = message.Content.Trim();
                 
-                data.messages.Add(message);
+                messagesData.messages.Add(message);
                 AppendMessage(message);
             }
             else
@@ -83,7 +86,7 @@ namespace OpenAI
 
             button.enabled = true;
             inputField.enabled = true;
-            DealMessages.SaveMessages(data, false, "myauth");
+            DealMessages.SaveMessages(messagesData.messages, true, "myauthmessages");
         }
     }
 }
