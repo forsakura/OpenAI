@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.IO;
+using Utils;
 
 namespace OpenAI
 {
@@ -14,13 +16,17 @@ namespace OpenAI
         [SerializeField] private RectTransform received;
 
         private float height;
-        private OpenAIApi openai = new OpenAIApi();
+        private OpenAIApi openai;
 
-        private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as a random stranger in a chat room and reply to the questions. Don't break character. Don't ever mention that you are an AI model.";
-
+        private OpenAIData data;
+        private string authPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\auth.json";
+        private string myAuthPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\myauth.json";
+        private string difyAuthPath = "C:\\Users\\zhuju\\Documents\\OpenAI\\difyauth.json";
+        
         private void Start()
         {
+            data = DealMessages.LoadMessages<OpenAIData>("myauth");
+            openai = new OpenAIApi(data.api_key);
             button.onClick.AddListener(SendReply);
         }
 
@@ -47,9 +53,9 @@ namespace OpenAI
             
             AppendMessage(newMessage);
 
-            if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text; 
+            if (data.messages.Count == 0) newMessage.Content = data.prompt + "\n" + inputField.text; 
             
-            messages.Add(newMessage);
+            data.messages.Add(newMessage);
             
             button.enabled = false;
             inputField.text = "";
@@ -58,8 +64,8 @@ namespace OpenAI
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
             {
-                Model = "gpt-4o-mini",
-                Messages = messages
+                Model = data.model,
+                Messages = data.messages
             });
 
             if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
@@ -67,7 +73,7 @@ namespace OpenAI
                 var message = completionResponse.Choices[0].Message;
                 message.Content = message.Content.Trim();
                 
-                messages.Add(message);
+                data.messages.Add(message);
                 AppendMessage(message);
             }
             else
@@ -77,6 +83,7 @@ namespace OpenAI
 
             button.enabled = true;
             inputField.enabled = true;
+            DealMessages.SaveMessages(data, false, "myauth");
         }
     }
 }
