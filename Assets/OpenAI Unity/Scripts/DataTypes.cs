@@ -3,6 +3,22 @@ using Newtonsoft.Json;
 
 namespace OpenAI
 {
+    #region Enum
+
+    public enum MessageType
+    {
+        Text,
+        Image
+    }
+
+    public enum ImageDetail
+    {
+        low,
+        high
+    }
+
+    #endregion
+    
     #region Common Data Types
     public struct Choice
     {
@@ -132,6 +148,12 @@ namespace OpenAI
     {
         public string Role;
         public string Content;
+    }
+
+    public struct ImageMessage
+    {
+        public string Type;
+        public string Url;
     }
     
     #endregion

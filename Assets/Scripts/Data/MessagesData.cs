@@ -10,9 +10,12 @@ namespace Data
     {
         public List<ChatMessage> messages;
 
+        public List<Content> Contentmessages;
+
         public MessagesData(int capacity)
         {
             messages = new List<ChatMessage>(capacity);
+            Contentmessages = new List<Content>(capacity);
         }
     }
 }

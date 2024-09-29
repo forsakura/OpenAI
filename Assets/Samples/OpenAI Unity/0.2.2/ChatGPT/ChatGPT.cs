@@ -29,7 +29,7 @@ namespace OpenAI
         {
             messagesData = new MessagesData(0);
             data = DealMessages.LoadMessages<OpenAIData>("myauth");
-            openai = new OpenAIApi(data.api_key);
+            openai = new OpenAIApi(data.apiKey);
             button.onClick.AddListener(SendReply);
         }
 

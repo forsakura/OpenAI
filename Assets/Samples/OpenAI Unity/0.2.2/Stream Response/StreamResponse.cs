@@ -1,17 +1,18 @@
-using UnityEngine;
-using System.Linq;
-using UnityEngine.UI;
-using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using OpenAI;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace OpenAI
+namespace Samples.OpenAI_Unity._0._2._2.Stream_Response
 {
     public class StreamResponse : MonoBehaviour
     {
         [SerializeField] private Button button;
         [SerializeField] private Text text;
         
-        private OpenAIApi openai = new OpenAIApi();
+        private OpenAIApi openai = new OpenAIApi("sk-jWRna4VvgbQJojli7274646613824dEeB4A7435aF7B2Fc4b");
         private CancellationTokenSource token = new CancellationTokenSource();
         
         private void Start()
