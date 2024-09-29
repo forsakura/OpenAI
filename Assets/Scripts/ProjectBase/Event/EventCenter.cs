@@ -39,10 +39,11 @@ namespace ProjectBase.Event
             actions += action;
         }
     }
+
     public class EventCenter : SingletonByQing<EventCenter>
     {
         private Dictionary<string, IEventInfo> eventDic = new Dictionary<string, IEventInfo>();
-        
+
         /// <summary>
         /// 添加事件监听
         /// </summary>
@@ -80,7 +81,7 @@ namespace ProjectBase.Event
             }
             else
             {
-                eventDic.Add(eventName, new EventInfo<T,K,M>(action));
+                eventDic.Add(eventName, new EventInfo<T, K, M>(action));
             }
         }
 

@@ -21,15 +21,18 @@ namespace Utils
         /// <param name="obj"></param>
         /// <param name="readability"></param>
         /// <param name="fileName"></param>
-        public static void SaveMessages(object obj, [DefaultValue("false")]bool readability, string fileName)
+        public static async void SaveMessages(object obj, [DefaultValue("false")]bool readability, string fileName)
         {
             string path = messagesPath + "/" + fileName + ".json";
             string jsonStr = JsonConvert.SerializeObject(obj);
             if (!File.Exists(path))
             {
                 File.Create(path);
+                await File.WriteAllTextAsync(path, jsonStr);
+                File.Create(path).Close();
+                return;
             }
-            File.WriteAllText(path, jsonStr);
+            await File.WriteAllTextAsync(path, jsonStr);
         }
 
         /// <summary>

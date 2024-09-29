@@ -10,13 +10,13 @@ using LitJson;
 namespace ProjectBase.Date
 {
     /*
-     * Êı¾İ´æ´¢¹¤¾ß
-     * °üº¬PlayerPrefs£¬jsonÁ½ÖÖ·½Ê½½øĞĞÊı¾İ´æ´¢£¬¶ÁÈ¡ºÍÉ¾³ı¡£
-     * jsonUtilityÄ¿Ç°²»Ö§³Ö×Öµä´æ´¢£¬nullÖµÎŞ·¨´æ´¢£¬»á×ª»»ÎªÄ¬ÈÏÖµ£¬×¢ÒâÊı¾İ´æ´¢Î»ÖÃ¶¼ÔÚStreamingAssetsÎÄ¼ş¼ĞÏÂÃæ£¬×îºÃ½«ËùÓĞÊı¾İÀà¶¼´æ´¢ÔÚDateÎÄ¼ş¼ĞÏÂ¡£
+     * æ•°æ®å­˜å‚¨å·¥å…·
+     * åŒ…å«PlayerPrefsï¼Œjsonä¸¤ç§æ–¹å¼è¿›è¡Œæ•°æ®å­˜å‚¨ï¼Œè¯»å–å’Œåˆ é™¤ã€‚
+     * jsonUtilityç›®å‰ä¸æ”¯æŒå­—å…¸å­˜å‚¨ï¼Œnullå€¼æ— æ³•å­˜å‚¨ï¼Œä¼šè½¬æ¢ä¸ºé»˜è®¤å€¼ï¼Œæ³¨æ„æ•°æ®å­˜å‚¨ä½ç½®éƒ½åœ¨StreamingAssetsæ–‡ä»¶å¤¹ä¸‹é¢ï¼Œæœ€å¥½å°†æ‰€æœ‰æ•°æ®ç±»éƒ½å­˜å‚¨åœ¨Dateæ–‡ä»¶å¤¹ä¸‹ã€‚
      * 
-     * JsonÌá¹©Á½ÖÖ·Ö±ğÊÇJsonUtilityºÍJsonMapper¡£
-     * JsonMapperÃÖ²¹ÁËJsonUtilityµÄ²¿·ÖÈ±µã£¬
-     * ¾ÍÊÇĞòÁĞ»¯¶Ì°å£¨²¿·ÖÊı¾İÎŞ·¨ĞòÁĞ»¯£¬Èç×Öµä¿ÉĞòÁĞ»¯£¨×ÖµäµÄ¼üÀàĞÍ²»ÄÜÊÇint£¬·´ĞòÁĞ»¯Ê±»á³öÎÊÌâ£©£¬Ò²¿É´æ´¢nullÖµ£¬Ö±½Ó¶ÁÈ¡Êı¾İ¼¯ºÏ£©¡£×¢ÒâË½ÓĞ±äÁ¿ÎŞ·¨Ê¹ÓÃÌØĞÔÀ´ĞòÁĞ»¯¡£
+     * Jsonæä¾›ä¸¤ç§åˆ†åˆ«æ˜¯JsonUtilityå’ŒJsonMapperã€‚
+     * JsonMapperå¼¥è¡¥äº†JsonUtilityçš„éƒ¨åˆ†ç¼ºç‚¹ï¼Œ
+     * å°±æ˜¯åºåˆ—åŒ–çŸ­æ¿ï¼ˆéƒ¨åˆ†æ•°æ®æ— æ³•åºåˆ—åŒ–ï¼Œå¦‚å­—å…¸å¯åºåˆ—åŒ–ï¼ˆå­—å…¸çš„é”®ç±»å‹ä¸èƒ½æ˜¯intï¼Œååºåˆ—åŒ–æ—¶ä¼šå‡ºé—®é¢˜ï¼‰ï¼Œä¹Ÿå¯å­˜å‚¨nullå€¼ï¼Œç›´æ¥è¯»å–æ•°æ®é›†åˆï¼‰ã€‚æ³¨æ„ç§æœ‰å˜é‡æ— æ³•ä½¿ç”¨ç‰¹æ€§æ¥åºåˆ—åŒ–ã€‚
      */
 
     public enum JsonType
@@ -35,10 +35,10 @@ namespace ProjectBase.Date
         #region PlayerPrefs
 
         /// <summary>
-        /// ´æ´¢Êı¾İ
+        /// å­˜å‚¨æ•°æ®
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="saveDate">ĞèÒª´æ´¢µÄÊı¾İ</param>
+        /// <param name="saveDate">éœ€è¦å­˜å‚¨çš„æ•°æ®</param>
         public static void SaveGameByPlayerPrefs(string key, object saveDate)
         {
             var res = JsonUtility.ToJson(saveDate);
@@ -47,9 +47,9 @@ namespace ProjectBase.Date
         }
 
         /// <summary>
-        /// ¶ÁÈ¡Êı¾İ
+        /// è¯»å–æ•°æ®
         /// </summary>
-        /// <param name="key">ĞèÒª¶ÁÈ¡µÄÊı¾İ</param>
+        /// <param name="key">éœ€è¦è¯»å–çš„æ•°æ®</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T LoadGameByPlayerPrefs<T>(string key)
@@ -59,16 +59,16 @@ namespace ProjectBase.Date
         }
 
         /// <summary>
-        /// É¾³ıÄ³¸öÌØ¶¨´æµµ
+        /// åˆ é™¤æŸä¸ªç‰¹å®šå­˜æ¡£
         /// </summary>
-        /// <param name="key">ĞèÒªÉ¾³ı´æµµ¼ü</param>
+        /// <param name="key">éœ€è¦åˆ é™¤å­˜æ¡£é”®</param>
         public static void DeleteSaveDateByPlayerPrefs(string key)
         {
             PlayerPrefs.DeleteKey(key);
         }
 
         /// <summary>
-        /// É¾³ıËùÓĞ´æµµ
+        /// åˆ é™¤æ‰€æœ‰å­˜æ¡£
         /// </summary>
         public static void DeleteAllSaveDateByPlayerPrefs()
         {
@@ -80,11 +80,11 @@ namespace ProjectBase.Date
         #region Json
 
         /// <summary>
-        /// ´æ´¢Êı¾İ
+        /// å­˜å‚¨æ•°æ®
         /// </summary>
-        /// <param name="fileName">Êı¾İ´æ´¢µÄÎÄ¼şÃû</param>
-        /// <param name="obj">Ğè´æ´¢µÄ¶ÔÏó</param>
-        /// <param name="type">Ö¸¶¨Ê¹ÓÃµÄJsonÀàĞÍ</param>
+        /// <param name="fileName">æ•°æ®å­˜å‚¨çš„æ–‡ä»¶å</param>
+        /// <param name="obj">éœ€å­˜å‚¨çš„å¯¹è±¡</param>
+        /// <param name="type">æŒ‡å®šä½¿ç”¨çš„Jsonç±»å‹</param>
         public static void SaveGameByJson<T>(string fileName, T obj, JsonType type)
         {
             var path = Application.streamingAssetsPath + "/" + fileName + ".json";
@@ -105,11 +105,11 @@ namespace ProjectBase.Date
         }
 
         /// <summary>
-        /// ¶ÁÈ¡Êı¾İ
+        /// è¯»å–æ•°æ®
         /// </summary>
-        /// <param name="fileName">ĞèÒª¶ÁÈ¡µÄÎÄ¼şÃû</param>
-        /// <param name="type">Ö¸¶¨Ê¹ÓÃµÄJsonÀàĞÍ</param>
-        /// <typeparam name="T">ĞèÖ¸¶¨µÄÊı¾İÀàĞÍ</typeparam>
+        /// <param name="fileName">éœ€è¦è¯»å–çš„æ–‡ä»¶å</param>
+        /// <param name="type">æŒ‡å®šä½¿ç”¨çš„Jsonç±»å‹</param>
+        /// <typeparam name="T">éœ€æŒ‡å®šçš„æ•°æ®ç±»å‹</typeparam>
         /// <returns></returns>
         public static T LoadGameFromJson<T>(string fileName, JsonType type)
         {
@@ -135,9 +135,9 @@ namespace ProjectBase.Date
         }
 
         /// <summary>
-        /// É¾³ı´æµµÊı¾İ
+        /// åˆ é™¤å­˜æ¡£æ•°æ®
         /// </summary>
-        /// <param name="fileName">ĞèÉ¾³ıµÄÊı¾İÎÄ¼ş</param>
+        /// <param name="fileName">éœ€åˆ é™¤çš„æ•°æ®æ–‡ä»¶</param>
         public static void DeleteGameDateByJson(string fileName)
         {
             var path = applicationPath + "/" + fileName + ".json";
@@ -185,7 +185,7 @@ namespace ProjectBase.Date
 
         
         /// <summary>
-        ///¼ÓÔØ±íÊı¾İµ½ÄÚ´æÖĞ
+        ///åŠ è½½è¡¨æ•°æ®åˆ°å†…å­˜ä¸­
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="K"></typeparam>
@@ -252,7 +252,7 @@ namespace ProjectBase.Date
         }
 
         /// <summary>
-        /// »ñÈ¡±íĞÅÏ¢
+        /// è·å–è¡¨ä¿¡æ¯
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>

@@ -24,13 +24,6 @@ namespace Game.UI
 
         #endregion
 
-        /*#region KEYPATH
-
-        private const string AUTH_PATH = "C:\\Users\\zhuju\\Documents\\OpenAI\\myauth.json";
-
-        #endregion*/
-        
-
         private void OnEnable()
         {
             sent = ResManager.LoadResource<GameObject>("UI/Sent Message").GetComponent<RectTransform>();
@@ -41,7 +34,7 @@ namespace Game.UI
         {
             messagesData = new MessagesData(0);
             data = DealMessages.LoadMessages<OpenAIData>("myauth");
-            openai = new OpenAIApi(data.api_key);
+            openai = new OpenAIApi(data.apiKey);
             GetControl<Button>("SendButton").onClick.AddListener(() => SendReply(messagesData, data, openai));
         }
 
@@ -72,10 +65,11 @@ namespace Game.UI
             };
             
             AppendMessage(newMessage);
+
+            if (messagesData.messages.Count == 0)
+                newMessage.Content = data.prompt + "\n" + GetControl<InputField>("InputField").text;
+            
             messagesData.messages.Add(newMessage);
-            
-            newMessage.Content = data.prompt + "\n" + GetControl<InputField>("InputField").text; 
-            
             
             GetControl<Button>("SendButton").enabled = false;
             GetControl<InputField>("InputField").text = "";
