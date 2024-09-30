@@ -9,23 +9,23 @@ using Utils;
 
 namespace Game.GPT
 {
-    public class GPTNO3 : MonoBehaviour
+    /*
+     * 三号GPT负责接收2号GPT输出的总体解释，根据该总体解释输出供comfyUI绘图的prompt
+     * 对外提供获取三号GPTprompt的方法。
+     */
+    public class GPTNO3
     {
+        private OpenAIData data;
 
-        public OpenAIData data;
+        private OpenAIClient OpenAIClient;
 
-        public OpenAIClient OpenAIClient;
+        private List<Message> currentMessages = new List<Message>();
 
-        public List<Message> currentMessages;
-        
-        // Start is called before the first frame update
-        void Start()
+        public GPTNO3()
         {
             data = DealMessages.LoadMessages<OpenAIData>(FileNames.GPT3Authentication);
             OpenAIClient = new OpenAIClient(new OpenAIAuthentication(data.apiKey, data.organizationId, data.projectId));
             currentMessages.Add(new Message(Role.System, data.prompt));
-            GPTNO2.GetGPT2OverallMessage(out string overall);
-            currentMessages.Add(new Message(Role.User, overall));
             EventCenter.Instance.AddEventListener(EventName.GPTNO2Over, Function);
         }
 

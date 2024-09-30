@@ -5,32 +5,26 @@ using OpenAI;
 using OpenAI.Chat;
 using ProjectBase.Date;
 using ProjectBase.Event;
-using ProjectBase.Res;
-using ProjectBase.UI;
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Windows;
 using Utilities;
 using Utils;
 
 namespace Game.GPT
 {
-    public class GPTNO1 : BasePanel
+    /*
+     * 负责与玩家对话交流，收集玩家信息，占卜问题以及玩家昵称。
+     * 对外提供获取对话记录，占卜问题和玩家昵称的方法。
+     */
+    public class GPTNO1
     {
-        /*private RectTransform sent;
-        private RectTransform received;*/
-        
         private static OpenAIClient _openAIClient;
 
         private static OpenAIData data;
 
         private static List<Message> CurrentMessages = new List<Message>();
 
-        //private float height;
-        // Start is called before the first frame update
-        void Start()
+        public GPTNO1()
         {
-            /*sent = ResManager.LoadResource<GameObject>("UI/Sent Message").GetComponent<RectTransform>();
-            received = ResManager.LoadResource<GameObject>("UI/Received Message").GetComponent<RectTransform>();*/
             data = DealMessages.LoadMessages<OpenAIData>(FileNames.GPT1Authentication);
             _openAIClient = new OpenAIClient(new OpenAIAuthentication(data.apiKey, data.organizationId, data.projectId));
             CurrentMessages.Add(new Message(Role.System, data.prompt));
@@ -43,32 +37,15 @@ namespace Game.GPT
         {
             Message message = new Message(Role.User, userMessage);
             AddMessageToMessageList(message);
-            //ShowMessage(message);
             var chatRequest = new ChatRequest(CurrentMessages, data.model);
             var chatResponse = await _openAIClient.ChatEndpoint.GetCompletionAsync(chatRequest);
             var choice = chatResponse.FirstChoice;
-            //处理GPT返回的信息，提取GPT结构化输出的response部分，将该部分返回到调用端
             string gptResponse = DealResponseMessage(choice.Message);
             message = new Message(choice.Message.Role, gptResponse);
             AddMessageToMessageList(message);
-            //ShowMessage(message);
             DealMessages.SaveMessages(CurrentMessages, true, FileNames.GPT1MessagesFileName);
             return gptResponse;
         }
-
-        /*void ShowMessage(Message message)
-        {
-            GetControl<ScrollRect>("ScrollView").content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
-            RectTransform rt = Instantiate(message.Role == Role.User ? sent : received, GetControl<ScrollRect>("ScrollView").content);
-            rt.GetChild(0).GetChild(0).GetComponent<Text>().text = message.Role == Role.User
-                ? message.Content.ToString()
-                : DealResponseMessage(message);
-            rt.anchoredPosition = new Vector2(0, -height);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
-            height += rt.sizeDelta.y;
-            GetControl<ScrollRect>("ScrollView").content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
-            GetControl<ScrollRect>("ScrollView").verticalNormalizedPosition = 0;
-        }*/
 
         /// <summary>
         /// 添加对话信息到对话信息集合
@@ -76,12 +53,11 @@ namespace Game.GPT
         /// <param name="message"></param>
         static void AddMessageToMessageList(Message message)
         {
-            CurrentMessages.Add(new Message(message.Role,
-                message.Role == Role.User ? message.Content.ToString() : DealResponseMessage(message)));
+            CurrentMessages.Add(new Message(message.Role, message.Content.ToString()));
         }
         
         /// <summary>
-        /// 处理GPT输出的结构化信息，
+        /// 处理GPT输出的结构化信息，提取其中的response部分。
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
